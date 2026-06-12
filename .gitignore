@@ -1,0 +1,17 @@
+## Build folders
+[Db]in/
+[Oo]bj/
+
+## IDE and tools
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## SQL LocalDB and temporary files
+*.mdf
+*.ldf
+*.log
+appsettings.Development.json

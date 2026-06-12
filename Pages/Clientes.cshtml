@@ -1,0 +1,113 @@
+@page
+@model NegocioWeb.Pages.ClientesModel
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="text-white mb-1">Clientes</h1>
+        <p class="text-muted mb-0">Listado cargado en tiempo real desde la base de datos SQL Server.</p>
+    </div>
+    <div>
+        <span class="badge bg-success px-3 py-2 rounded-pill font-monospace">CONEXIÓN SQL</span>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <div class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger p-4 card-custom mt-0 mb-4" role="alert">
+        <h4 class="alert-heading fw-bold d-flex align-items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            Error de Conexión de Base de Datos
+        </h4>
+        <p class="mb-3 mt-2 text-white">No pudimos leer los datos de SQL Server. Esto suele ocurrir por dos razones:</p>
+        <ol class="text-white bg-dark bg-opacity-25 p-3 rounded" style="margin-left: 1.5rem;">
+            <li class="mb-2"><strong>La base de datos no está creada:</strong> Asegúrate de haber ejecutado el script <code>el_rincon_del_papel_db_con_historial.sql</code> en tu SQL Server Management Studio para crear la base <code>ElRinconDelPapelDB</code>.</li>
+            <li><strong>Cadena de conexión incorrecta:</strong> Revisa tu servidor SQL en el archivo <code>appsettings.json</code>. Si usas SQL Express prueba con <code>.\\SQLEXPRESS</code>, si usas LocalDB usa <code>(localdb)\\MSSQLLocalDB</code>, y si usas la instancia por defecto usa <code>localhost</code> o <code>.</code>.</li>
+        </ol>
+        <hr class="border-danger opacity-25">
+        <p class="mb-0 font-monospace text-danger" style="font-size: 0.9rem;"><strong>Detalle técnico del error:</strong> @Model.MensajeError</p>
+    </div>
+}
+else
+{
+    <div class="card-custom mt-0 p-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-custom table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>Nombre / Razón Social</th>
+                        <th>Documento / CUIT</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th class="text-center pe-4">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if (Model.Clientes.Count == 0)
+                {
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            No se encontraron clientes registrados en la base de datos.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var cliente in Model.Clientes)
+                    {
+                        <tr>
+                            <td class="ps-4 font-monospace text-muted">@cliente.Id</td>
+                            <td class="fw-semibold text-white">@cliente.Nombre</td>
+                            <td>
+                                @if (string.IsNullOrEmpty(cliente.Documento))
+                                {
+                                    <span class="text-muted font-monospace">-</span>
+                                }
+                                else
+                                {
+                                    <span class="font-monospace text-white">@cliente.Documento</span>
+                                }
+                            </td>
+                            <td>
+                                @if (string.IsNullOrEmpty(cliente.Telefono))
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                                else
+                                {
+                                    <span>@cliente.Telefono</span>
+                                }
+                            </td>
+                            <td>
+                                @if (string.IsNullOrEmpty(cliente.Email))
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                                else
+                                {
+                                    <a href="mailto:@cliente.Email" class="text-decoration-none text-primary">@cliente.Email</a>
+                                }
+                            </td>
+                            <td class="text-center pe-4">
+                                @if (cliente.Activo)
+                                {
+                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2.5 py-1">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2.5 py-1">Inactivo</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
