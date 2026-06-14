@@ -1,0 +1,80 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="ELRINCON.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="es">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - El Rinc&oacute;n del Papel</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar-custom {
+            background: #000000 !important;
+            border-bottom: 1px solid #222222;
+        }
+        .navbar-brand-custom {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #ffffff !important;
+        }
+        .card-custom {
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+            padding: 2rem;
+        }
+        .footer-custom {
+            background: #f8f9fa;
+            border-top: 1px solid #cccccc;
+            padding: 1.5rem 0;
+            margin-top: auto;
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4">
+                <div class="container">
+                    <a class="navbar-brand navbar-brand-custom" href="<%= ResolveUrl("~/Default.aspx") %>">El Rinc&oacute;n del Papel</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="<%= ResolveUrl("~/Default.aspx") %>">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="<%= ResolveUrl("~/Productos.aspx") %>">Productos</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-5">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+            </main>
+        </div>
+        <footer class="footer-custom text-muted">
+            <div class="container text-center">
+                &copy; 2026 - <span class="text-dark fw-bold">El Rinc&oacute;n del Papel</span> - Gesti&oacute;n Comercial
+            </div>
+        </footer>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
