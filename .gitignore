@@ -1,5 +1,6 @@
 ## Build outputs
-[Bb]in/
+[Bb]in/*
+![Bb]in/roslyn/
 [Oo]bj/
 [Log]/
 
