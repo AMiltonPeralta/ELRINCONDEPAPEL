@@ -42,3 +42,4 @@ namespace ELRINCON
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
     }
 }
+

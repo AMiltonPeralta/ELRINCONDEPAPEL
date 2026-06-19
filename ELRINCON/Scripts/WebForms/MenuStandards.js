@@ -695,3 +695,4 @@ Sys.WebForms._MenuContainer.prototype = {
         }
     }
 };
+

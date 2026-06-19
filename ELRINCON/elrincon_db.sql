@@ -64,3 +64,4 @@ INSERT INTO Productos (Nombre, IdMarca, IdCategoria, StockActual, Activo) VALUES
 ('Sacapuntas plastico', 4, 1, 90, 1),
 ('Cuaderno universitario 80 hojas', 2, 1, 55, 1);
 GO
+

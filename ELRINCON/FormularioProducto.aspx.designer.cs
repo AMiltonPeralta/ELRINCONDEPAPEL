@@ -67,3 +67,4 @@ namespace ELRINCON {
         protected global::System.Web.UI.WebControls.Button btnAceptar;
     }
 }
+
