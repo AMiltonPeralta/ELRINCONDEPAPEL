@@ -10,6 +10,7 @@
                     <th scope="col">Nombre</th>
                     <th scope="col">Marca</th>
                     <th scope="col">Stock Actual</th>
+                    <th scope="col">Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,6 +20,9 @@
                             <td><%# Eval("Nombre") %></td>
                             <td><%# ((Dominio.Producto)Container.DataItem).Marca.Nombre %></td>
                             <td><%# Eval("StockActual") %></td>
+                            <td>
+                                <a href="FormularioProducto.aspx?id=<%# Eval("Id") %>&cat=1" class="btn btn-sm btn-warning">Modificar</a>
+                            </td>
                         </tr>
                     </ItemTemplate>
                 </asp:Repeater>
@@ -26,6 +30,7 @@
         </table>
 
         <div class="mt-4">
+            <a href="FormularioProducto.aspx?cat=1" class="btn btn-primary me-2">Agregar Producto</a>
             <a href="Productos.aspx" class="btn btn-secondary">Volver a Productos</a>
         </div>
     </div>

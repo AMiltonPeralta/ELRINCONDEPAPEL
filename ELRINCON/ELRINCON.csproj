@@ -101,6 +101,7 @@
   <ItemGroup>
     <Content Include="Productos.aspx" />
     <Content Include="Libreria.aspx" />
+    <Content Include="FormularioProducto.aspx" />
     <Content Include="Computacion.aspx" />
     <Content Include="Gaming.aspx" />
     <Content Include="JuegosMesa.aspx" />
@@ -199,6 +200,13 @@
     </Compile>
     <Compile Include="Libreria.aspx.designer.cs">
       <DependentUpon>Libreria.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioProducto.aspx.cs">
+      <DependentUpon>FormularioProducto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormularioProducto.aspx.designer.cs">
+      <DependentUpon>FormularioProducto.aspx</DependentUpon>
     </Compile>
     <Compile Include="Computacion.aspx.cs">
       <DependentUpon>Computacion.aspx</DependentUpon>
