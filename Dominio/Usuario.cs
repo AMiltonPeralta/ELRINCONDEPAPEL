@@ -11,7 +11,7 @@ namespace Dominio
         public string Nombre { get; set; } = "";
         public string Email { get; set; } = "";
         public string Clave { get; set; } = ""; // Contraseña
-        public string Rol { get; set; } = "Vendedor"; // "Administrador" o "Vendedor"
+        public string Rol { get; set; } = "Cliente"; // "Administrador" o "Cliente"
         public bool Activo { get; set; } = true;
     }
 }
