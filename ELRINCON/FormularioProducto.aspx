@@ -29,9 +29,14 @@
                     <asp:DropDownList ID="ddlCategoria" runat="server" CssClass="form-select" />
                 </div>
                 
-                <div class="mb-4">
+                <div class="mb-3">
                     <label for="txtStock" class="form-label fw-semibold text-secondary">Stock Inicial</label>
                     <asp:TextBox ID="txtStock" runat="server" CssClass="form-control" TextMode="Number" min="0" placeholder="0" Required="true" />
+                </div>
+
+                <div class="mb-4">
+                    <label for="txtImagenUrl" class="form-label fw-semibold text-secondary">URL de la Imagen</label>
+                    <asp:TextBox ID="txtImagenUrl" runat="server" CssClass="form-control" placeholder="https://ejemplo.com/imagen.jpg" MaxLength="500" />
                 </div>
                 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">

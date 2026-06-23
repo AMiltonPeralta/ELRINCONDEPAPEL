@@ -52,6 +52,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
+                        <!-- Enlaces de navegación alineados a la izquierda junto al nombre -->
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="<%= ResolveUrl("~/Default.aspx") %>">Inicio</a>
@@ -60,6 +61,20 @@
                                 <a class="nav-link text-white" href="<%= ResolveUrl("~/Productos.aspx") %>">Productos</a>
                             </li>
                         </ul>
+                        
+                        <!-- Buscador alineado a la derecha con icono de lupa (lupita) -->
+                        <div class="position-relative my-2 my-lg-0" style="width: 100%; max-width: 320px;">
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary border-end-0 text-white-50" style="padding-right: 8px; padding-left: 12px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-search text-white-50" viewBox="0 0 16 16">
+                                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                    </svg>
+                                </span>
+                                <input type="text" id="txtBuscarNav" class="form-control bg-dark text-white border-secondary border-start-0" placeholder="Buscar productos..." autocomplete="off" style="font-size: 0.85rem; padding-left: 0; outline: none; box-shadow: none;" />
+                            </div>
+                            <div id="resultadosBusqueda" class="list-group position-absolute d-none shadow-lg w-100" style="z-index: 1050; max-height: 350px; overflow-y: auto; top: 100%;">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -76,5 +91,88 @@
         </footer>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Lógica de Búsqueda Dinámica en Tiempo Real (Estilo Instant Search) -->
+    <script>
+        // Datos precargados en JSON desde el code-behind
+        const dbProductos = <%= ProductosJson ?? "[]" %>;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const txtBuscarNav = document.getElementById('txtBuscarNav');
+            const resultadosBusqueda = document.getElementById('resultadosBusqueda');
+
+            if (!txtBuscarNav || !resultadosBusqueda) return;
+
+            // Función para renderizar el listado en la caja desplegable
+            function renderizarResultados(lista, titulo = "") {
+                if (lista.length === 0) {
+                    resultadosBusqueda.innerHTML = `<div class="list-group-item text-muted text-center py-3" style="font-size: 0.9rem;">Sin resultados coincidentes</div>`;
+                    resultadosBusqueda.classList.remove('d-none');
+                    return;
+                }
+
+                let html = "";
+                if (titulo) {
+                    html += `<div class="list-group-item bg-light text-uppercase fw-bold text-secondary py-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">${titulo}</div>`;
+                }
+
+                lista.forEach(prod => {
+                    const imgUrl = prod.ImagenUrl || "https://images.unsplash.com/photo-1595231712426-63d27862de67?w=100&q=80";
+                    html += `
+                        <a href="FormularioProducto.aspx?id=${prod.Id}&cat=${prod.IdCategoria}" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-2">
+                            <img src="${imgUrl}" alt="${prod.Nombre}" class="rounded object-fit-cover" style="width: 40px; height: 40px; min-width: 40px;" />
+                            <div class="flex-grow-1 min-w-0">
+                                <h6 class="mb-0 text-dark fw-bold text-truncate" style="font-size: 0.85rem;">${prod.Nombre}</h6>
+                                <span class="text-muted small text-uppercase" style="font-size: 0.7rem;">${prod.Marca}</span>
+                            </div>
+                            <span class="badge bg-secondary opacity-75 px-2 py-1" style="font-size: 0.65rem;">${prod.Categoria}</span>
+                        </a>
+                    `;
+                });
+
+                resultadosBusqueda.innerHTML = html;
+                resultadosBusqueda.classList.remove('d-none');
+            }
+
+            // Al hacer focus en el buscador vacío, precarga las sugerencias (primeros 4 productos)
+            txtBuscarNav.addEventListener('focus', () => {
+                const query = txtBuscarNav.value.trim().toLowerCase();
+                if (query === "") {
+                    const sugeridos = dbProductos.slice(0, 4);
+                    renderizarResultados(sugeridos, "Sugerencias de Búsqueda");
+                } else {
+                    // Si ya tenía texto al volver a hacer foco, recalcula el filtrado
+                    txtBuscarNav.dispatchEvent(new Event('input'));
+                }
+            });
+
+            // Filtrado dinámico instantáneo al escribir
+            txtBuscarNav.addEventListener('input', () => {
+                const query = txtBuscarNav.value.trim().toLowerCase();
+
+                if (query === "") {
+                    const sugeridos = dbProductos.slice(0, 4);
+                    renderizarResultados(sugeridos, "Sugerencias de Búsqueda");
+                    return;
+                }
+
+                // Filtra por nombre, marca o categoría
+                const filtrados = dbProductos.filter(prod => 
+                    prod.Nombre.toLowerCase().includes(query) || 
+                    prod.Marca.toLowerCase().includes(query) ||
+                    prod.Categoria.toLowerCase().includes(query)
+                );
+
+                renderizarResultados(filtrados, `Resultados para "${query}"`);
+            });
+
+            // Cerrar el listado desplegable al hacer clic fuera del buscador
+            document.addEventListener('click', (e) => {
+                if (!txtBuscarNav.contains(e.target) && !resultadosBusqueda.contains(e.target)) {
+                    resultadosBusqueda.classList.add('d-none');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

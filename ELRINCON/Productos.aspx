@@ -1,22 +1,107 @@
 <%@ Page Title="Productos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Productos.aspx.cs" Inherits="ELRINCON.Productos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="card-custom text-center py-5">
-        <h2 class="text-dark mb-4">Productos</h2>
+    <!-- Panel de Selección de Categorías -->
+    <asp:Panel ID="pnlSeleccion" runat="server" CssClass="card-custom text-center py-5">
+        <h2 class="text-dark mb-4 fw-bold">Productos por Categoría</h2>
         
-        <div class="mb-4 text-start mx-auto" style="max-width: 320px;">
-            <label for="ddlCategorias" class="form-label fw-bold">Categor&iacute;as</label>
-            <asp:DropDownList ID="ddlCategorias" CssClass="form-select mb-3" runat="server">
-                <asp:ListItem Text="Seleccione una categor&iacute;a" Value="0" />
-                <asp:ListItem Text="Librer&iacute;a" Value="1" />
-                <asp:ListItem Text="Computaci&oacute;n" Value="2" />
-                <asp:ListItem Text="Gaming" Value="3" />
-                <asp:ListItem Text="Juegos de mesa" Value="4" />
-            </asp:DropDownList>
-            <asp:Button ID="btnAceptar" runat="server" Text="Aceptar" CssClass="btn btn-primary w-100" OnClick="btnAceptar_Click" />
+        <div class="mb-4 text-start mx-auto" style="max-width: 360px;">
+            <label for="ddlCategorias" class="form-label fw-bold">Seleccionar Categoría</label>
+            <div class="d-flex gap-2 mb-3">
+                <asp:DropDownList ID="ddlCategorias" CssClass="form-select" runat="server" />
+                <asp:Button ID="btnAceptar" runat="server" Text="Ir" CssClass="btn btn-dark" OnClick="btnAceptar_Click" />
+            </div>
+            
+            <!-- Botón para mostrar panel de agregar categoría -->
+            <asp:Button ID="btnMostrarCrearCat" runat="server" Text="Nueva Categoría" CssClass="btn btn-outline-primary btn-sm w-100" OnClick="btnMostrarCrearCat_Click" />
+            
+            <!-- Formulario Inline para Nueva Categoría (visible al presionar el botón) -->
+            <asp:Panel ID="pnlCrearCategoria" runat="server" Visible="false" CssClass="mt-3 p-3 border rounded bg-light">
+                <label class="form-label fw-bold text-muted small">Nombre de la nueva categoría</label>
+                <asp:TextBox ID="txtNuevaCategoria" runat="server" CssClass="form-control form-control-sm mb-2" placeholder="Ej: Deportes, Accesorios" />
+                <div class="d-flex gap-2">
+                    <asp:Button ID="btnGuardarCategoria" runat="server" Text="Guardar" CssClass="btn btn-success btn-sm flex-fill" OnClick="btnGuardarCategoria_Click" />
+                    <asp:Button ID="btnCancelarCategoria" runat="server" Text="Cancelar" CssClass="btn btn-secondary btn-sm" OnClick="btnCancelarCategoria_Click" />
+                </div>
+            </asp:Panel>
         </div>
 
-        <a href="Default.aspx" class="btn btn-secondary">Volver al Inicio</a>
-    </div>
-</asp:Content>
+        <a href="Default.aspx" class="btn btn-secondary mt-3">Volver al Inicio</a>
+    </asp:Panel>
 
+    <!-- Panel de Listado de Productos (Estilo Pokedex) -->
+    <asp:Panel ID="pnlListado" runat="server" Visible="false">
+        <div class="card-custom py-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <span class="text-uppercase text-muted fw-bold small">Sección de Productos</span>
+                    <h2 class="text-dark fw-bold mb-0">Categoría: <asp:Label ID="lblNombreCategoria" runat="server" /></h2>
+                </div>
+                <div class="d-flex gap-2">
+                    <asp:HyperLink ID="lnkAgregarProducto" runat="server" CssClass="btn btn-primary">Agregar Producto</asp:HyperLink>
+                    <a href="Productos.aspx" class="btn btn-outline-secondary">Volver a Selección</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grilla de Tarjetas Tipo Pokedex -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+            <asp:Repeater ID="repProductos" runat="server">
+                <ItemTemplate>
+                    <div class="col">
+                        <div class="card h-100 border rounded shadow-sm hover-card transition-all" style="background: #ffffff;">
+                            <!-- Contenedor de la Imagen del Producto -->
+                            <div class="position-relative overflow-hidden bg-light border-bottom rounded-top" style="height: 180px;">
+                                <img src='<%# string.IsNullOrEmpty(Eval("ImagenUrl") as string) ? "https://images.unsplash.com/photo-1595231712426-63d27862de67?w=300&q=80" : Eval("ImagenUrl") %>' 
+                                     alt='<%# Eval("Nombre") %>' 
+                                     class="w-100 h-100 object-fit-cover transition-transform hover-zoom" />
+                                <span class="position-absolute top-2 end-2 badge bg-dark opacity-75">
+                                    Stock: <%# Eval("StockActual") %>
+                                </span>
+                            </div>
+                            
+                            <!-- Detalles del Producto -->
+                            <div class="card-body d-flex flex-column p-3">
+                                <span class="text-uppercase text-muted fw-bold small mb-1 d-block"><%# ((Dominio.Producto)Container.DataItem).Marca.Nombre %></span>
+                                <h5 class="card-title text-dark fw-bold mb-2 text-truncate" title='<%# Eval("Nombre") %>'><%# Eval("Nombre") %></h5>
+                                
+                                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-secondary opacity-75"><%# ((Dominio.Producto)Container.DataItem).Categoria.Nombre %></span>
+                                    <a href='FormularioProducto.aspx?id=<%# Eval("Id") %>&cat=<%# Eval("Categoria.Id") %>' class="btn btn-sm btn-outline-warning fw-bold px-3">Modificar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ItemTemplate>
+            </asp:Repeater>
+        </div>
+        
+        <!-- Mensaje si no hay productos -->
+        <asp:Panel ID="pnlSinProductos" runat="server" Visible="false" CssClass="text-center py-5 border rounded bg-light">
+            <p class="text-muted fs-4">No hay productos cargados en esta categoría.</p>
+            <asp:HyperLink ID="lnkAgregarProductoVacio" runat="server" CssClass="btn btn-primary" Text="Cargar el primer producto" />
+        </asp:Panel>
+    </asp:Panel>
+
+    <!-- Estilos adicionales integrados en el head o master, los ponemos acá para facilidad -->
+    <style>
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+        .transition-all {
+            transition: all 0.25s ease-in-out;
+        }
+        .object-fit-cover {
+            object-fit: cover;
+        }
+        .hover-zoom {
+            transition: transform 0.3s ease-in-out;
+        }
+        .hover-card:hover .hover-zoom {
+            transform: scale(1.05);
+        }
+        .top-2 { top: 0.5rem; }
+        .end-2 { right: 0.5rem; }
+    </style>
+</asp:Content>

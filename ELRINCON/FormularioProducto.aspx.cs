@@ -44,17 +44,14 @@ namespace ELRINCON
                         txtId.Text = id;
                         txtNombre.Text = seleccionado.Nombre;
                         txtStock.Text = seleccionado.StockActual.ToString();
+                        txtImagenUrl.Text = seleccionado.ImagenUrl;
                         ddlMarca.SelectedValue = seleccionado.Marca.Id.ToString();
                         ddlCategoria.SelectedValue = seleccionado.Categoria.Id.ToString();
                         ddlCategoria.Enabled = false; // Deshabilitar cambio de categoría en edición
 
                         // Configurar enlace cancelar dinámico
                         string catSelected = seleccionado.Categoria.Id.ToString();
-                        if (catSelected == "1") lnkCancelar.NavigateUrl = "Libreria.aspx";
-                        else if (catSelected == "2") lnkCancelar.NavigateUrl = "Computacion.aspx";
-                        else if (catSelected == "3") lnkCancelar.NavigateUrl = "Gaming.aspx";
-                        else if (catSelected == "4") lnkCancelar.NavigateUrl = "JuegosMesa.aspx";
-                        else lnkCancelar.NavigateUrl = "Productos.aspx";
+                        lnkCancelar.NavigateUrl = "Productos.aspx?cat=" + catSelected;
                     }
                     else if (!string.IsNullOrEmpty(catId))
                     {
@@ -63,11 +60,7 @@ namespace ELRINCON
                         ddlCategoria.Enabled = false;
 
                         // Configurar el enlace de Cancelar dinámicamente según la categoría de origen
-                        if (catId == "1") lnkCancelar.NavigateUrl = "Libreria.aspx";
-                        else if (catId == "2") lnkCancelar.NavigateUrl = "Computacion.aspx";
-                        else if (catId == "3") lnkCancelar.NavigateUrl = "Gaming.aspx";
-                        else if (catId == "4") lnkCancelar.NavigateUrl = "JuegosMesa.aspx";
-                        else lnkCancelar.NavigateUrl = "Productos.aspx";
+                        lnkCancelar.NavigateUrl = "Productos.aspx?cat=" + catId;
                     }
                     else
                     {
@@ -90,6 +83,7 @@ namespace ELRINCON
                 Producto nuevo = new Producto();
                 nuevo.Nombre = txtNombre.Text.Trim();
                 nuevo.StockActual = int.Parse(txtStock.Text);
+                nuevo.ImagenUrl = txtImagenUrl.Text.Trim();
                 
                 nuevo.Marca = new Marca();
                 nuevo.Marca.Id = int.Parse(ddlMarca.SelectedValue);
@@ -112,11 +106,7 @@ namespace ELRINCON
 
                 // 3. Redirección dinámica según la categoría guardada (Opción B)
                 int idCategoria = nuevo.Categoria.Id;
-                if (idCategoria == 1) Response.Redirect("Libreria.aspx", false);
-                else if (idCategoria == 2) Response.Redirect("Computacion.aspx", false);
-                else if (idCategoria == 3) Response.Redirect("Gaming.aspx", false);
-                else if (idCategoria == 4) Response.Redirect("JuegosMesa.aspx", false);
-                else Response.Redirect("Productos.aspx", false);
+                Response.Redirect("Productos.aspx?cat=" + idCategoria, false);
             }
             catch (Exception ex)
             {

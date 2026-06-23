@@ -100,11 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Productos.aspx" />
-    <Content Include="Libreria.aspx" />
     <Content Include="FormularioProducto.aspx" />
-    <Content Include="Computacion.aspx" />
-    <Content Include="Gaming.aspx" />
-    <Content Include="JuegosMesa.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -194,13 +190,7 @@
     <Compile Include="Productos.aspx.designer.cs">
       <DependentUpon>Productos.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Libreria.aspx.cs">
-      <DependentUpon>Libreria.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Libreria.aspx.designer.cs">
-      <DependentUpon>Libreria.aspx</DependentUpon>
-    </Compile>
+
     <Compile Include="FormularioProducto.aspx.cs">
       <DependentUpon>FormularioProducto.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -208,27 +198,7 @@
     <Compile Include="FormularioProducto.aspx.designer.cs">
       <DependentUpon>FormularioProducto.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Computacion.aspx.cs">
-      <DependentUpon>Computacion.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Computacion.aspx.designer.cs">
-      <DependentUpon>Computacion.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Gaming.aspx.cs">
-      <DependentUpon>Gaming.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Gaming.aspx.designer.cs">
-      <DependentUpon>Gaming.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="JuegosMesa.aspx.cs">
-      <DependentUpon>JuegosMesa.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="JuegosMesa.aspx.designer.cs">
-      <DependentUpon>JuegosMesa.aspx</DependentUpon>
-    </Compile>
+
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
