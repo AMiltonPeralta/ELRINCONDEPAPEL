@@ -53,7 +53,7 @@ namespace Negocio
             }
         }
 
-        public List<Producto> listar(string id = "")
+        public List<Producto> listar(string id = "", string idCategoria = "")
         {
             List<Producto> lista = new List<Producto>();
             AccesoDatos datos = new AccesoDatos();
@@ -64,6 +64,10 @@ namespace Negocio
                 if (id != "")
                 {
                     consulta += " And P.IdProducto = " + id;
+                }
+                if (!string.IsNullOrEmpty(idCategoria))
+                {
+                    consulta += " And P.IdCategoria = " + idCategoria;
                 }
                 
                 datos.setearConsulta(consulta);
