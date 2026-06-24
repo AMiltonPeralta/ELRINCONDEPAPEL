@@ -113,6 +113,8 @@ namespace ELRINCON
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkAgregarProducto;
 
+
+
         /// <summary>
         /// Control repProductos.
         /// </summary>
