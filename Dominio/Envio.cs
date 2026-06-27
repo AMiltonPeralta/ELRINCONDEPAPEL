@@ -11,5 +11,10 @@ namespace Dominio
         public string CodigoPostal { get; set; } = "";
         public string NumeroSeguimiento { get; set; } = "";
         public string Estado { get; set; } = "Pendiente"; // "Pendiente", "Despachado", "Entregado"
+
+        // Propiedades auxiliares para grillas
+        public string NumeroFactura { get; set; } = "";
+        public string ClienteNombre { get; set; } = "";
+        public DateTime FechaVenta { get; set; }
     }
 }
