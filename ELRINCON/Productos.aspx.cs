@@ -15,6 +15,10 @@ namespace ELRINCON
         {
             try
             {
+                // Controlar visibilidad de opciones de edición por rol de usuario
+                lnkAgregarProducto.Visible = Seguridad.esAdmin(Session["usuario"]);
+                btnMostrarCrearCat.Visible = Seguridad.esAdmin(Session["usuario"]);
+
                 if (!IsPostBack)
                 {
                     // 1. Cargar las categorías dinámicamente desde la base de datos

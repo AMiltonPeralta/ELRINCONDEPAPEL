@@ -67,5 +67,12 @@ namespace ELRINCON
             string busqueda = txtBuscarNav.Text.Trim();
             Response.Redirect("~/Productos.aspx?busqueda=" + HttpUtility.UrlEncode(busqueda), false);
         }
+
+        protected void btnSalir_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Response.Redirect("~/Default.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
+        }
     }
 }

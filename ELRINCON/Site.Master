@@ -60,6 +60,14 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="<%= ResolveUrl("~/Productos.aspx") %>">Productos</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="<%= ResolveUrl("~/Seguimiento.aspx") %>">Seguimiento</a>
+                            </li>
+                            <% if (Negocio.Seguridad.esAdmin(Session["usuario"])) { %>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="<%= ResolveUrl("~/GestionEnvios.aspx") %>">Gestión Envíos</a>
+                                </li>
+                            <% } %>
                         </ul>
                         
                         <!-- Buscador en el medio con lupita -->
@@ -107,6 +115,18 @@
                                 </span>
                             <% } %>
                         </a>
+
+                        <!-- Bloque de Autenticación -->
+                        <div class="d-flex align-items-center gap-2 ms-2">
+                            <% if (!Negocio.Seguridad.sesionActiva(Session["usuario"])) { %>
+                                <a href="<%= ResolveUrl("~/Login.aspx") %>" class="btn btn-outline-primary text-white border-primary-subtle" style="font-size: 0.85rem; height: 38px; display: flex; align-items: center; justify-content: center; font-weight: 600;">Ingresar</a>
+                            <% } else { %>
+                                <span class="text-white small text-nowrap d-none d-md-inline ms-2">
+                                    Hola, <strong class="text-info"><%= ((Dominio.Usuario)Session["usuario"]).Nombre %></strong> (<%= ((Dominio.Usuario)Session["usuario"]).Rol %>)
+                                </span>
+                                <asp:LinkButton ID="btnSalir" runat="server" OnClick="btnSalir_Click" CssClass="btn btn-outline-danger" style="font-size: 0.85rem; height: 38px; display: flex; align-items: center; justify-content: center; font-weight: 600;">Salir</asp:LinkButton>
+                            <% } %>
+                        </div>
                     </div>
                 </div>
             </nav>

@@ -104,6 +104,9 @@
     <Content Include="Checkout.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="Confirmacion.aspx" />
+    <Content Include="Seguimiento.aspx" />
+    <Content Include="Login.aspx" />
+    <Content Include="GestionEnvios.aspx" />
     <Content Include="FormularioProducto.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -248,6 +251,27 @@
     </Compile>
     <Compile Include="Confirmacion.aspx.designer.cs">
       <DependentUpon>Confirmacion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Seguimiento.aspx.cs">
+      <DependentUpon>Seguimiento.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Seguimiento.aspx.designer.cs">
+      <DependentUpon>Seguimiento.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionEnvios.aspx.cs">
+      <DependentUpon>GestionEnvios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionEnvios.aspx.designer.cs">
+      <DependentUpon>GestionEnvios.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

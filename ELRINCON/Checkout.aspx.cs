@@ -87,7 +87,14 @@ namespace ELRINCON
                 // Armar el objeto Venta
                 Venta nuevaVenta = new Venta();
                 nuevaVenta.NumeroFactura = "FAC-" + DateTime.Now.ToString("yyyyMMddHHmmss");
-                nuevaVenta.Cliente = new Usuario { Id = 2 }; // Mocking Milton Cliente
+                if (Session["usuario"] != null)
+                {
+                    nuevaVenta.Cliente = (Usuario)Session["usuario"];
+                }
+                else
+                {
+                    nuevaVenta.Cliente = new Usuario { Id = 2 }; // Mocking Milton Cliente
+                }
                 nuevaVenta.Fecha = DateTime.Now;
                 nuevaVenta.Total = totalPagar;
                 nuevaVenta.Pago = new MetodoPago 
@@ -127,7 +134,7 @@ namespace ELRINCON
                     string cuerpo = $@"
                         <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;'>
                             <h2 style='color: #0d6efd;'>¡Gracias por tu compra en El Rincón del Papel!</h2>
-                            <p>Hola Milton Cliente,</p>
+                            <p>Hola {nuevaVenta.Cliente.Nombre},</p>
                             <p>Tu pedido ha sido procesado con éxito. A continuación te detallamos los datos de tu compra:</p>
                             
                             <table style='width: 100%; border-collapse: collapse; margin: 20px 0;'>
@@ -157,7 +164,7 @@ namespace ELRINCON
                             <p style='margin-top: 30px; border-top: 1px solid #e0e0e0; padding-top: 15px; font-weight: bold; color: #0d6efd;'>El Rincón del Papel</p>
                         </div>";
 
-                    emailService.armarCorreo("cliente@elrincon.com", "Confirmación de Compra - El Rincón del Papel", cuerpo);
+                    emailService.armarCorreo(string.IsNullOrEmpty(nuevaVenta.Cliente.Email) ? "cliente@elrincon.com" : nuevaVenta.Cliente.Email, "Confirmación de Compra - El Rincón del Papel", cuerpo);
                     emailService.enviarEmail();
                 }
                 catch (Exception)

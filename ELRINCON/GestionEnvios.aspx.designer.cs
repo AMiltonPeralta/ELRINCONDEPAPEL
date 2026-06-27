@@ -7,75 +7,90 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace ELRINCON
-{
-
-
-    public partial class SiteMaster
-    {
-
+namespace ELRINCON {
+    
+    
+    public partial class GestionEnvios {
+        
         /// <summary>
-        /// Control head.
+        /// Control pnlAlertaExito.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
-
+        protected global::System.Web.UI.WebControls.Panel pnlAlertaExito;
+        
         /// <summary>
-        /// Control form1.
+        /// Control dgvEnvios.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
+        protected global::System.Web.UI.WebControls.GridView dgvEnvios;
+        
         /// <summary>
-        /// Control txtBuscarNav.
+        /// Control pnlGestion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBuscarNav;
-
+        protected global::System.Web.UI.WebControls.Panel pnlGestion;
+        
         /// <summary>
-        /// Control btnBuscarNav.
+        /// Control lblFacturaGestion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnBuscarNav;
-
+        protected global::System.Web.UI.WebControls.Label lblFacturaGestion;
+        
         /// <summary>
-        /// Control repSugerencias.
+        /// Control hfIdEnvio.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater repSugerencias;
-
+        protected global::System.Web.UI.WebControls.HiddenField hfIdEnvio;
+        
         /// <summary>
-        /// Control MainContent.
+        /// Control txtSeguimiento.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
-
+        protected global::System.Web.UI.WebControls.TextBox txtSeguimiento;
+        
         /// <summary>
-        /// Control btnSalir.
+        /// Control ddlEstado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSalir;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEstado;
+        
+        /// <summary>
+        /// Control btnGuardar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGuardar;
+        
+        /// <summary>
+        /// Control btnCancelar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelar;
     }
 }
-

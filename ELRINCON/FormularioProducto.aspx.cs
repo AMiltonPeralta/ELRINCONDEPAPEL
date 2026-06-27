@@ -15,6 +15,15 @@ namespace ELRINCON
         {
             try
             {
+                // Validar permisos de administrador
+                if (!Seguridad.esAdmin(Session["usuario"]))
+                {
+                    Session.Add("error", "No tienes permisos de administrador para ingresar a esta pantalla.");
+                    Response.Redirect("Error.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
+                    return;
+                }
+
                 if (!IsPostBack)
                 {
                     // 1. Cargar las marcas desde la base de datos

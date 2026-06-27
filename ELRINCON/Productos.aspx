@@ -70,7 +70,7 @@
                                 <div class="mt-auto pt-3 border-top">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="badge bg-secondary opacity-75"><%# ((Dominio.Producto)Container.DataItem).Categoria.Nombre %></span>
-                                        <a href='FormularioProducto.aspx?id=<%# Eval("Id") %>&cat=<%# Eval("Categoria.Id") %>' class="btn btn-sm btn-outline-warning fw-bold px-2 py-0" style="font-size: 0.75rem;">Editar</a>
+                                        <asp:HyperLink ID="lnkEditar" runat="server" NavigateUrl='<%# "FormularioProducto.aspx?id=" + Eval("Id") + "&cat=" + Eval("Categoria.Id") %>' CssClass="btn btn-sm btn-outline-warning fw-bold px-2 py-0" style="font-size: 0.75rem;" Visible='<%# Negocio.Seguridad.esAdmin(Session["usuario"]) %>'>Editar</asp:HyperLink>
                                     </div>
                                     <asp:LinkButton ID="btnAgregarCarrito" runat="server" CssClass="btn btn-sm btn-primary w-100 fw-bold d-flex align-items-center justify-content-center gap-1" CommandName="AgregarCarrito" CommandArgument='<%# Eval("Id") %>'>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
