@@ -85,5 +85,87 @@ namespace Negocio
                 }
             }
         }
+
+        public Venta buscarPorId(int idVenta)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                    SELECT V.IdVenta, V.NumeroFactura, V.Fecha, V.Total, V.IdMetodoPago, M.Nombre as MetodoPagoNombre
+                    FROM Ventas V
+                    INNER JOIN MetodosPago M ON V.IdMetodoPago = M.IdMetodoPago
+                    WHERE V.IdVenta = @idVenta");
+                datos.setearParametro("@idVenta", idVenta);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    Venta venta = new Venta();
+                    venta.Id = (int)datos.Lector["IdVenta"];
+                    venta.NumeroFactura = (string)datos.Lector["NumeroFactura"];
+                    venta.Fecha = (DateTime)datos.Lector["Fecha"];
+                    venta.Total = (decimal)datos.Lector["Total"];
+                    venta.Pago = new MetodoPago
+                    {
+                        Id = (int)datos.Lector["IdMetodoPago"],
+                        Nombre = (string)datos.Lector["MetodoPagoNombre"]
+                    };
+
+                    datos.cerrarConexion();
+
+                    venta.Detalles = listarDetalles(venta.Id);
+                    return venta;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public List<DetalleVenta> listarDetalles(int idVenta)
+        {
+            List<DetalleVenta> lista = new List<DetalleVenta>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                    SELECT D.IdDetalleVenta, D.Cantidad, D.PrecioUnitario, D.Subtotal, P.IdProducto, P.Nombre, P.ImagenUrl
+                    FROM DetalleVentas D
+                    INNER JOIN Productos P ON D.IdProducto = P.IdProducto
+                    WHERE D.IdVenta = @idVenta");
+                datos.setearParametro("@idVenta", idVenta);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    DetalleVenta det = new DetalleVenta();
+                    det.Cantidad = (int)datos.Lector["Cantidad"];
+                    det.PrecioUnitario = (decimal)datos.Lector["PrecioUnitario"];
+
+                    det.Articulo = new Producto();
+                    det.Articulo.Id = (int)datos.Lector["IdProducto"];
+                    det.Articulo.Nombre = (string)datos.Lector["Nombre"];
+                    det.Articulo.ImagenUrl = datos.Lector["ImagenUrl"] != DBNull.Value ? (string)datos.Lector["ImagenUrl"] : "";
+
+                    lista.Add(det);
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }
