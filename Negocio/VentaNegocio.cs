@@ -167,5 +167,59 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public List<Venta> listarPorUsuario(int idUsuario)
+        {
+            List<Venta> lista = new List<Venta>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                    SELECT V.IdVenta, V.NumeroFactura, V.Fecha, V.Total, V.IdMetodoPago, M.Nombre as MetodoPagoNombre,
+                           E.IdEnvio, E.NumeroSeguimiento, E.Estado as EstadoEnvio
+                    FROM Ventas V
+                    INNER JOIN MetodosPago M ON V.IdMetodoPago = M.IdMetodoPago
+                    LEFT JOIN Envios E ON V.IdVenta = E.IdVenta
+                    WHERE V.IdUsuario = @idUsuario
+                    ORDER BY V.Fecha DESC");
+                datos.setearParametro("@idUsuario", idUsuario);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Venta venta = new Venta();
+                    venta.Id = (int)datos.Lector["IdVenta"];
+                    venta.NumeroFactura = (string)datos.Lector["NumeroFactura"];
+                    venta.Fecha = (DateTime)datos.Lector["Fecha"];
+                    venta.Total = (decimal)datos.Lector["Total"];
+                    venta.Pago = new MetodoPago
+                    {
+                        Id = (int)datos.Lector["IdMetodoPago"],
+                        Nombre = (string)datos.Lector["MetodoPagoNombre"]
+                    };
+
+                    if (datos.Lector["IdEnvio"] != DBNull.Value)
+                    {
+                        venta.DatosEnvio = new Envio
+                        {
+                            Id = (int)datos.Lector["IdEnvio"],
+                            NumeroSeguimiento = datos.Lector["NumeroSeguimiento"] != DBNull.Value ? (string)datos.Lector["NumeroSeguimiento"] : "",
+                            Estado = (string)datos.Lector["EstadoEnvio"]
+                        };
+                    }
+
+                    lista.Add(venta);
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

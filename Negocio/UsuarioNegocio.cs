@@ -34,5 +34,50 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public int registrar(Usuario nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"
+                    INSERT INTO Usuarios (Nombre, Email, Clave, Rol, Activo) 
+                    VALUES (@nombre, @email, @clave, 'Cliente', 1);
+                    SELECT CAST(scope_identity() AS int);");
+                datos.setearParametro("@nombre", nuevo.Nombre);
+                datos.setearParametro("@email", nuevo.Email);
+                datos.setearParametro("@clave", nuevo.Clave);
+
+                return datos.ejecutarAccionScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public bool existeEmail(string email)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT COUNT(1) FROM Usuarios WHERE Email = @email");
+                datos.setearParametro("@email", email);
+                int count = datos.ejecutarAccionScalar();
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }
