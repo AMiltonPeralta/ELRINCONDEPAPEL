@@ -11,8 +11,10 @@ namespace ELRINCON
 {
     public partial class FormularioProducto : System.Web.UI.Page
     {
+        public bool ConfirmaEliminacion { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
+            ConfirmaEliminacion = false;
             try
             {
                 // Validar permisos de administrador
@@ -143,6 +145,31 @@ namespace ELRINCON
             else
             {
                 imgProducto.ImageUrl = txtImagenUrl.Text.Trim();
+            }
+        }
+
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            ConfirmaEliminacion = true;
+        }
+
+        protected void btnConfirmaEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkConfirmaEliminacion.Checked)
+                {
+                    ProductoNegocio negocio = new ProductoNegocio();
+                    negocio.eliminar(int.Parse(txtId.Text));
+
+                    string catSelected = ddlCategoria.SelectedValue;
+                    Response.Redirect("Productos.aspx?cat=" + catSelected, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
             }
         }
     }

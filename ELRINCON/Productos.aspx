@@ -1,32 +1,58 @@
 <%@ Page Title="Productos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Productos.aspx.cs" Inherits="ELRINCON.Productos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server" />
     <!-- Panel de Selección de Categorías -->
     <asp:Panel ID="pnlSeleccion" runat="server" CssClass="card-custom text-center py-5">
-        <h2 class="text-dark mb-4 fw-bold">Productos por Categoría</h2>
-        
-        <div class="mb-4 text-start mx-auto" style="max-width: 360px;">
-            <label for="ddlCategorias" class="form-label fw-bold">Seleccionar Categoría</label>
-            <div class="d-flex gap-2 mb-3">
-                <asp:DropDownList ID="ddlCategorias" CssClass="form-select" runat="server" />
-                <asp:Button ID="btnAceptar" runat="server" Text="Ir" CssClass="btn btn-dark" OnClick="btnAceptar_Click" />
-            </div>
-            
-            <!-- Botón para mostrar panel de agregar categoría -->
-            <asp:Button ID="btnMostrarCrearCat" runat="server" Text="Nueva Categoría" CssClass="btn btn-outline-primary btn-sm w-100" OnClick="btnMostrarCrearCat_Click" />
-            
-            <!-- Formulario Inline para Nueva Categoría (visible al presionar el botón) -->
-            <asp:Panel ID="pnlCrearCategoria" runat="server" Visible="false" CssClass="mt-3 p-3 border rounded bg-light">
-                <label class="form-label fw-bold text-muted small">Nombre de la nueva categoría</label>
-                <asp:TextBox ID="txtNuevaCategoria" runat="server" CssClass="form-control form-control-sm mb-2" placeholder="Ej: Deportes, Accesorios" />
-                <div class="d-flex gap-2">
-                    <asp:Button ID="btnGuardarCategoria" runat="server" Text="Guardar" CssClass="btn btn-success btn-sm flex-fill" OnClick="btnGuardarCategoria_Click" />
-                    <asp:Button ID="btnCancelarCategoria" runat="server" Text="Cancelar" CssClass="btn btn-secondary btn-sm" OnClick="btnCancelarCategoria_Click" />
-                </div>
-            </asp:Panel>
-        </div>
+        <asp:UpdatePanel ID="UpdatePanelSeleccion" runat="server">
+            <ContentTemplate>
+                <h2 class="text-dark mb-4 fw-bold">Productos por Categoría</h2>
+                
+                <div class="mb-4 text-start mx-auto" style="max-width: 360px;">
+                    <label for="ddlCategorias" class="form-label fw-bold">Seleccionar Categoría</label>
+                    <div class="d-flex gap-2 mb-3">
+                        <asp:DropDownList ID="ddlCategorias" CssClass="form-select" runat="server" />
+                        <asp:Button ID="btnAceptar" runat="server" Text="Ir" CssClass="btn btn-dark" OnClick="btnAceptar_Click" />
+                    </div>
+                    
+                    <!-- Botones de administración de categorías -->
+                    <div class="d-flex gap-2 mb-2">
+                        <asp:Button ID="btnMostrarCrearCat" runat="server" Text="Nueva Categoría" CssClass="btn btn-outline-primary btn-sm flex-fill" OnClick="btnMostrarCrearCat_Click" />
+                        <asp:Button ID="btnEliminarCat" runat="server" Text="Eliminar Categoría" CssClass="btn btn-outline-danger btn-sm flex-fill" OnClick="btnEliminarCat_Click" />
+                    </div>
+                    
+                    <!-- Formulario Inline para Nueva Categoría -->
+                    <asp:Panel ID="pnlCrearCategoria" runat="server" Visible="false" CssClass="mt-3 p-3 border rounded bg-light">
+                        <label class="form-label fw-bold text-muted small">Nombre de la nueva categoría</label>
+                        <asp:TextBox ID="txtNuevaCategoria" runat="server" CssClass="form-control form-control-sm mb-2" placeholder="Ej: Deportes, Accesorios" />
+                        <div class="d-flex gap-2">
+                            <asp:Button ID="btnGuardarCategoria" runat="server" Text="Guardar" CssClass="btn btn-success btn-sm flex-fill" OnClick="btnGuardarCategoria_Click" />
+                            <asp:Button ID="btnCancelarCategoria" runat="server" Text="Cancelar" CssClass="btn btn-secondary btn-sm" OnClick="btnCancelarCategoria_Click" />
+                        </div>
+                    </asp:Panel>
 
-        <a href="Default.aspx" class="btn btn-secondary mt-3">Volver al Inicio</a>
+                    <!-- Formulario Inline para Eliminar Categoría -->
+                    <asp:Panel ID="pnlConfirmarEliminarCat" runat="server" Visible="false" CssClass="mt-3 p-3 border border-danger-subtle rounded bg-danger-subtle text-danger-emphasis">
+                        <p class="small fw-semibold mb-2 text-center">¿Seguro que deseas eliminar la categoría "<asp:Label ID="lblCatAEliminar" runat="server" />"?</p>
+                        <div class="form-check mb-2 d-flex align-items-center justify-content-center">
+                            <input type="checkbox" id="chkConfirmaEliminarCat" runat="server" class="form-check-input flex-shrink-0" style="width: 1.15rem; height: 1.15rem; cursor: pointer;" />
+                            <label class="form-check-label fw-semibold small ms-2 lh-1" for="MainContent_chkConfirmaEliminarCat" style="cursor: pointer; user-select: none;">
+                                Confirmar eliminación
+                            </label>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <asp:Button ID="btnConfirmaEliminarCat" runat="server" Text="Eliminar de verdad" CssClass="btn btn-danger btn-sm flex-fill" OnClick="btnConfirmaEliminarCat_Click" />
+                            <asp:Button ID="btnCancelarEliminarCat" runat="server" Text="Cancelar" CssClass="btn btn-secondary btn-sm" OnClick="btnCancelarEliminarCat_Click" />
+                        </div>
+                    </asp:Panel>
+
+                    <!-- Mensaje de Advertencia/Error para Categorías -->
+                    <asp:Label ID="lblMensajeCat" runat="server" CssClass="d-block small text-danger fw-semibold mt-2 text-center" />
+                </div>
+
+                <a href="Default.aspx" class="btn btn-secondary mt-3">Volver al Inicio</a>
+            </ContentTemplate>
+        </asp:UpdatePanel>
     </asp:Panel>
 
     <!-- Panel de Listado de Productos (Estilo Pokedex) -->

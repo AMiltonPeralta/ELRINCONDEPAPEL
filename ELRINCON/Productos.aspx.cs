@@ -18,6 +18,7 @@ namespace ELRINCON
                 // Controlar visibilidad de opciones de edición por rol de usuario
                 lnkAgregarProducto.Visible = Seguridad.esAdmin(Session["usuario"]);
                 btnMostrarCrearCat.Visible = Seguridad.esAdmin(Session["usuario"]);
+                btnEliminarCat.Visible = Seguridad.esAdmin(Session["usuario"]);
 
                 if (!IsPostBack)
                 {
@@ -149,14 +150,71 @@ namespace ELRINCON
         {
             pnlCrearCategoria.Visible = true;
             btnMostrarCrearCat.Visible = false;
+            pnlConfirmarEliminarCat.Visible = false;
             txtNuevaCategoria.Text = "";
             txtNuevaCategoria.Focus();
+            lblMensajeCat.Text = "";
         }
 
         protected void btnCancelarCategoria_Click(object sender, EventArgs e)
         {
             pnlCrearCategoria.Visible = false;
             btnMostrarCrearCat.Visible = true;
+            lblMensajeCat.Text = "";
+        }
+
+        protected void btnEliminarCat_Click(object sender, EventArgs e)
+        {
+            lblMensajeCat.Text = "";
+            string seleccion = ddlCategorias.SelectedValue;
+            if (seleccion == "0")
+            {
+                lblMensajeCat.Text = "Debe seleccionar una categoría para eliminar.";
+                return;
+            }
+
+            pnlConfirmarEliminarCat.Visible = true;
+            pnlCrearCategoria.Visible = false;
+            btnMostrarCrearCat.Visible = true;
+            lblCatAEliminar.Text = ddlCategorias.SelectedItem.Text;
+            chkConfirmaEliminarCat.Checked = false;
+        }
+
+        protected void btnCancelarEliminarCat_Click(object sender, EventArgs e)
+        {
+            pnlConfirmarEliminarCat.Visible = false;
+            lblMensajeCat.Text = "";
+        }
+
+        protected void btnConfirmaEliminarCat_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                lblMensajeCat.Text = "";
+                if (chkConfirmaEliminarCat.Checked)
+                {
+                    string idCatStr = ddlCategorias.SelectedValue;
+                    if (idCatStr != "0")
+                    {
+                        int idCat = int.Parse(idCatStr);
+                        CategoriaNegocio negocio = new CategoriaNegocio();
+                        negocio.eliminar(idCat);
+
+                        // Recargar el dropdown
+                        CargarCategorias();
+
+                        pnlConfirmarEliminarCat.Visible = false;
+                    }
+                }
+                else
+                {
+                    lblMensajeCat.Text = "Debe marcar la casilla para confirmar la eliminación.";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblMensajeCat.Text = "Error al eliminar la categoría: " + ex.Message;
+            }
         }
 
         protected void btnGuardarCategoria_Click(object sender, EventArgs e)
@@ -177,8 +235,9 @@ namespace ELRINCON
                     // Recargar el dropdown para reflejar la nueva categoría
                     CargarCategorias();
 
-                    // Ocultar formulario de creación
+                    // Ocultar formulario de creación y de eliminación
                     pnlCrearCategoria.Visible = false;
+                    pnlConfirmarEliminarCat.Visible = false;
                     btnMostrarCrearCat.Visible = true;
 
                     // Seleccionar automáticamente la categoría recién creada
