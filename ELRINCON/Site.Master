@@ -63,6 +63,11 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="<%= ResolveUrl("~/Seguimiento.aspx") %>">Seguimiento</a>
                             </li>
+                            <% if (Negocio.Seguridad.sesionActiva(Session["usuario"])) { %>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="<%= ResolveUrl("~/MisCompras.aspx") %>">Mis Compras</a>
+                                </li>
+                            <% } %>
                             <% if (Negocio.Seguridad.esAdmin(Session["usuario"])) { %>
                                 <li class="nav-item">
                                     <a class="nav-link text-white" href="<%= ResolveUrl("~/GestionEnvios.aspx") %>">Gestión Envíos</a>

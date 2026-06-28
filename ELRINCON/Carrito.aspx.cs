@@ -89,5 +89,17 @@ namespace ELRINCON
                 throw ex;
             }
         }
+
+        protected void btnFinalizarCompra_Click(object sender, EventArgs e)
+        {
+            if (Session["usuario"] == null)
+            {
+                Response.Redirect("Login.aspx?checkout=true", false);
+            }
+            else
+            {
+                Response.Redirect("Checkout.aspx", false);
+            }
+        }
     }
 }

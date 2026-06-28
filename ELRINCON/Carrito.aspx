@@ -117,7 +117,7 @@
                     </div>
                     
                     <div class="d-grid gap-2">
-                        <a href="Checkout.aspx" class="btn btn-primary py-2.5 fw-semibold">Finalizar Compra</a>
+                        <asp:LinkButton ID="btnFinalizarCompra" runat="server" OnClick="btnFinalizarCompra_Click" CssClass="btn btn-primary py-2.5 fw-semibold">Finalizar Compra</asp:LinkButton>
                         <a href="Productos.aspx" class="btn btn-outline-secondary py-2">Seguir Comprando</a>
                     </div>
                 </div>

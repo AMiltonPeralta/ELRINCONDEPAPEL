@@ -56,7 +56,8 @@
                             <div class="position-relative overflow-hidden bg-light border-bottom rounded-top" style="height: 180px;">
                                 <img src='<%# string.IsNullOrEmpty(Eval("ImagenUrl") as string) ? "https://images.unsplash.com/photo-1595231712426-63d27862de67?w=300&q=80" : Eval("ImagenUrl") %>' 
                                      alt='<%# Eval("Nombre") %>' 
-                                     class="w-100 h-100 object-fit-cover transition-transform hover-zoom" />
+                                     class="w-100 h-100 object-fit-cover transition-transform hover-zoom"
+                                     onerror="this.src='https://images.unsplash.com/photo-1595231712426-63d27862de67?w=300&q=80';" />
                                 <span class="position-absolute top-2 end-2 badge bg-dark opacity-75">
                                     Stock: <%# Eval("StockActual") %>
                                 </span>

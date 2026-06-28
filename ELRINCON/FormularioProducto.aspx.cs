@@ -26,6 +26,9 @@ namespace ELRINCON
 
                 if (!IsPostBack)
                 {
+                    // Imagen por defecto inicial
+                    imgProducto.ImageUrl = "https://images.unsplash.com/photo-1595231712426-63d27862de67?w=300&q=80";
+
                     // 1. Cargar las marcas desde la base de datos
                     MarcaNegocio marcaNegocio = new MarcaNegocio();
                     ddlMarca.DataSource = marcaNegocio.listar();
@@ -54,6 +57,14 @@ namespace ELRINCON
                         txtNombre.Text = seleccionado.Nombre;
                         txtStock.Text = seleccionado.StockActual.ToString();
                         txtImagenUrl.Text = seleccionado.ImagenUrl;
+                        if (string.IsNullOrEmpty(seleccionado.ImagenUrl))
+                        {
+                            imgProducto.ImageUrl = "https://images.unsplash.com/photo-1595231712426-63d27862de67?w=300&q=80";
+                        }
+                        else
+                        {
+                            imgProducto.ImageUrl = seleccionado.ImagenUrl;
+                        }
                         ddlMarca.SelectedValue = seleccionado.Marca.Id.ToString();
                         ddlCategoria.SelectedValue = seleccionado.Categoria.Id.ToString();
                         ddlCategoria.Enabled = false; // Deshabilitar cambio de categoría en edición
@@ -120,6 +131,18 @@ namespace ELRINCON
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        protected void txtImagenUrl_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtImagenUrl.Text.Trim()))
+            {
+                imgProducto.ImageUrl = "https://images.unsplash.com/photo-1595231712426-63d27862de67?w=300&q=80";
+            }
+            else
+            {
+                imgProducto.ImageUrl = txtImagenUrl.Text.Trim();
             }
         }
     }

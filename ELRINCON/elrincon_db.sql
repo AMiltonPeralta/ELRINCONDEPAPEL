@@ -28,7 +28,7 @@ CREATE TABLE Productos (
     IdMarca INT NOT NULL,
     IdCategoria INT NOT NULL,
     StockActual INT NOT NULL,
-    ImagenUrl VARCHAR(500) NULL,
+    ImagenUrl VARCHAR(MAX) NULL,
     Activo BIT NOT NULL DEFAULT 1,
     FOREIGN KEY (IdMarca) REFERENCES Marcas(IdMarca),
     FOREIGN KEY (IdCategoria) REFERENCES Categorias(IdCategoria)

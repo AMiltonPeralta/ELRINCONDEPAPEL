@@ -107,6 +107,7 @@
     <Content Include="Seguimiento.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="GestionEnvios.aspx" />
+    <Content Include="MisCompras.aspx" />
     <Content Include="FormularioProducto.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -272,6 +273,13 @@
     </Compile>
     <Compile Include="GestionEnvios.aspx.designer.cs">
       <DependentUpon>GestionEnvios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MisCompras.aspx.cs">
+      <DependentUpon>MisCompras.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MisCompras.aspx.designer.cs">
+      <DependentUpon>MisCompras.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

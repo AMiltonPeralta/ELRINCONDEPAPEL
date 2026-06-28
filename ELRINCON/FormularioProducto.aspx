@@ -34,9 +34,13 @@
                     <asp:TextBox ID="txtStock" runat="server" CssClass="form-control" TextMode="Number" min="0" placeholder="0" Required="true" />
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-3">
                     <label for="txtImagenUrl" class="form-label fw-semibold text-secondary">URL de la Imagen</label>
-                    <asp:TextBox ID="txtImagenUrl" runat="server" CssClass="form-control" placeholder="https://ejemplo.com/imagen.jpg" MaxLength="500" />
+                    <asp:TextBox ID="txtImagenUrl" runat="server" CssClass="form-control" placeholder="https://ejemplo.com/imagen.jpg" AutoPostBack="true" OnTextChanged="txtImagenUrl_TextChanged" />
+                </div>
+                
+                <div class="mb-4 text-center">
+                    <asp:Image ID="imgProducto" runat="server" CssClass="img-fluid rounded border shadow-sm" style="max-height: 180px; min-height: 120px; min-width: 120px; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1595231712426-63d27862de67?w=300&q=80';" />
                 </div>
                 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
