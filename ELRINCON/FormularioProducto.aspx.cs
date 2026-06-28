@@ -58,6 +58,7 @@ namespace ELRINCON
                         txtId.Text = id;
                         txtNombre.Text = seleccionado.Nombre;
                         txtStock.Text = seleccionado.StockActual.ToString();
+                        txtPrecio.Text = seleccionado.Precio.ToString("F2");
                         txtImagenUrl.Text = seleccionado.ImagenUrl;
                         if (string.IsNullOrEmpty(seleccionado.ImagenUrl))
                         {
@@ -105,6 +106,7 @@ namespace ELRINCON
                 Producto nuevo = new Producto();
                 nuevo.Nombre = txtNombre.Text.Trim();
                 nuevo.StockActual = int.Parse(txtStock.Text);
+                nuevo.Precio = decimal.Parse(txtPrecio.Text);
                 nuevo.ImagenUrl = txtImagenUrl.Text.Trim();
                 
                 nuevo.Marca = new Marca();

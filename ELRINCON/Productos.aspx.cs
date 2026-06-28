@@ -11,6 +11,34 @@ namespace ELRINCON
 {
     public partial class Productos : System.Web.UI.Page
     {
+        public int CurrentPage
+        {
+            get
+            {
+                if (ViewState["CurrentPage"] != null)
+                    return (int)ViewState["CurrentPage"];
+                return 0;
+            }
+            set
+            {
+                ViewState["CurrentPage"] = value;
+            }
+        }
+
+        public int TotalPages
+        {
+            get
+            {
+                if (ViewState["TotalPages"] != null)
+                    return (int)ViewState["TotalPages"];
+                return 0;
+            }
+            set
+            {
+                ViewState["TotalPages"] = value;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -22,104 +50,116 @@ namespace ELRINCON
 
                 if (!IsPostBack)
                 {
-                    // 1. Cargar las categorías dinámicamente desde la base de datos
                     CargarCategorias();
-
-                    // 2. Procesar el parámetro de búsqueda o categoría en la QueryString
-                    string busqueda = Request.QueryString["busqueda"];
-                    string catId = Request.QueryString["cat"];
-
-                    if (busqueda != null)
-                    {
-                        // Alternar paneles de visualización
-                        pnlSeleccion.Visible = false;
-                        pnlListado.Visible = true;
-
-                        // Cargar y filtrar los productos de forma global
-                        ProductoNegocio productoNegocio = new ProductoNegocio();
-                        List<Producto> listaProductos = productoNegocio.listar();
-                        List<Producto> listaAMostrar;
-
-                        if (string.IsNullOrWhiteSpace(busqueda))
-                        {
-                            lblNombreCategoria.Text = "Productos Recomendados";
-                            listaAMostrar = listaProductos != null ? listaProductos.Take(10).ToList() : new List<Producto>();
-                        }
-                        else
-                        {
-                            lblNombreCategoria.Text = "Resultados para: \"" + busqueda + "\"";
-                            string filtro = busqueda.ToUpper();
-                            listaAMostrar = listaProductos.FindAll(x =>
-                                x.Nombre.ToUpper().Contains(filtro) ||
-                                x.Marca.Nombre.ToUpper().Contains(filtro) ||
-                                x.Categoria.Nombre.ToUpper().Contains(filtro)
-                            );
-                        }
-
-                        if (listaAMostrar != null && listaAMostrar.Count > 0)
-                        {
-                            repProductos.DataSource = listaAMostrar;
-                            repProductos.DataBind();
-                            repProductos.Visible = true;
-                            pnlSinProductos.Visible = false;
-                        }
-                        else
-                        {
-                            repProductos.Visible = false;
-                            pnlSinProductos.Visible = true;
-                            lnkAgregarProductoVacio.NavigateUrl = "FormularioProducto.aspx";
-                        }
-
-                        // Configurar el enlace del botón Agregar Producto
-                        lnkAgregarProducto.NavigateUrl = "FormularioProducto.aspx";
-                    }
-                    else if (!string.IsNullOrEmpty(catId) && catId != "0")
-                    {
-                        // Alternar paneles de visualización
-                        pnlSeleccion.Visible = false;
-                        pnlListado.Visible = true;
-
-                        // Buscar el nombre de la categoría actual para mostrarlo en el título
-                        CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
-                        List<Categoria> categorias = categoriaNegocio.listar();
-                        Categoria seleccionada = categorias.FirstOrDefault(c => c.Id.ToString() == catId);
-                        
-                        if (seleccionada != null)
-                        {
-                            lblNombreCategoria.Text = seleccionada.Nombre;
-                        }
-                        else
-                        {
-                            lblNombreCategoria.Text = "Desconocida";
-                        }
-
-                        // Cargar y filtrar los productos
-                        ProductoNegocio productoNegocio = new ProductoNegocio();
-                        List<Producto> listaProductos = productoNegocio.listar(idCategoria: catId);
-
-                        if (listaProductos != null && listaProductos.Count > 0)
-                        {
-                            repProductos.DataSource = listaProductos;
-                            repProductos.DataBind();
-                            repProductos.Visible = true;
-                            pnlSinProductos.Visible = false;
-                        }
-                        else
-                        {
-                            repProductos.Visible = false;
-                            pnlSinProductos.Visible = true;
-                            lnkAgregarProductoVacio.NavigateUrl = "FormularioProducto.aspx?cat=" + catId;
-                        }
-
-                        // Configurar el enlace del botón Agregar Producto
-                        lnkAgregarProducto.NavigateUrl = "FormularioProducto.aspx?cat=" + catId;
-                    }
+                    CurrentPage = 0;
+                    CargarProductos();
                 }
             }
             catch (Exception ex)
             {
-                // En un proyecto real se registraría el error, aquí lo relanzamos
                 throw ex;
+            }
+        }
+
+        private void CargarProductos()
+        {
+            string busqueda = Request.QueryString["busqueda"];
+            string catId = Request.QueryString["cat"];
+
+            ProductoNegocio productoNegocio = new ProductoNegocio();
+            List<Producto> listaProductos = null;
+
+            if (busqueda != null)
+            {
+                pnlSeleccion.Visible = false;
+                pnlListado.Visible = true;
+                btnVolverSeleccion.Visible = true;
+
+                List<Producto> listaCompleta = productoNegocio.listar();
+                if (string.IsNullOrWhiteSpace(busqueda))
+                {
+                    lblNombreCategoria.Text = "Productos Recomendados";
+                    listaProductos = listaCompleta;
+                }
+                else
+                {
+                    lblNombreCategoria.Text = "Resultados para: \"" + busqueda + "\"";
+                    string filtro = busqueda.ToUpper();
+                    listaProductos = listaCompleta.FindAll(x =>
+                        x.Nombre.ToUpper().Contains(filtro) ||
+                        x.Marca.Nombre.ToUpper().Contains(filtro) ||
+                        x.Categoria.Nombre.ToUpper().Contains(filtro)
+                    );
+                }
+            }
+            else if (!string.IsNullOrEmpty(catId) && catId != "0")
+            {
+                pnlSeleccion.Visible = false;
+                pnlListado.Visible = true;
+                btnVolverSeleccion.Visible = true;
+
+                CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+                List<Categoria> categorias = categoriaNegocio.listar();
+                Categoria seleccionada = categorias.FirstOrDefault(c => c.Id.ToString() == catId);
+                lblNombreCategoria.Text = seleccionada != null ? seleccionada.Nombre : "Desconocida";
+
+                listaProductos = productoNegocio.listar(idCategoria: catId);
+            }
+            else
+            {
+                pnlSeleccion.Visible = true;
+                pnlListado.Visible = true;
+                btnVolverSeleccion.Visible = false;
+
+                lblNombreCategoria.Text = "Todos los productos";
+                listaProductos = productoNegocio.listar();
+            }
+
+            // Configurar el enlace del botón Agregar Producto
+            string currentCat = !string.IsNullOrEmpty(catId) ? catId : "";
+            lnkAgregarProducto.NavigateUrl = "FormularioProducto.aspx" + (currentCat != "" ? "?cat=" + currentCat : "");
+            lnkAgregarProductoVacio.NavigateUrl = "FormularioProducto.aspx" + (currentCat != "" ? "?cat=" + currentCat : "");
+
+            if (listaProductos != null && listaProductos.Count > 0)
+            {
+                repProductos.Visible = true;
+                pnlSinProductos.Visible = false;
+                pnlPaginacion.Visible = true;
+
+                // Configurar PagedDataSource
+                PagedDataSource pagedData = new PagedDataSource();
+                pagedData.DataSource = listaProductos;
+                pagedData.AllowPaging = true;
+                pagedData.PageSize = 8; // 8 productos por página
+
+                TotalPages = pagedData.PageCount;
+
+                if (CurrentPage >= TotalPages)
+                {
+                    CurrentPage = 0;
+                }
+                pagedData.CurrentPageIndex = CurrentPage;
+
+                btnAnterior.Enabled = !pagedData.IsFirstPage;
+                btnSiguiente.Enabled = !pagedData.IsLastPage;
+
+                repProductos.DataSource = pagedData;
+                repProductos.DataBind();
+
+                // Llenar números de páginas
+                List<int> paginas = new List<int>();
+                for (int i = 0; i < TotalPages; i++)
+                {
+                    paginas.Add(i);
+                }
+                repPaginas.DataSource = paginas;
+                repPaginas.DataBind();
+            }
+            else
+            {
+                repProductos.Visible = false;
+                pnlPaginacion.Visible = false;
+                pnlSinProductos.Visible = true;
             }
         }
 
@@ -135,6 +175,33 @@ namespace ELRINCON
 
             // Insertar opción por defecto al inicio
             ddlCategorias.Items.Insert(0, new ListItem("Seleccione una categoría", "0"));
+        }
+
+        protected void btnAnterior_Click(object sender, EventArgs e)
+        {
+            if (CurrentPage > 0)
+            {
+                CurrentPage--;
+                CargarProductos();
+            }
+        }
+
+        protected void btnSiguiente_Click(object sender, EventArgs e)
+        {
+            if (CurrentPage < TotalPages - 1)
+            {
+                CurrentPage++;
+                CargarProductos();
+            }
+        }
+
+        protected void repPaginas_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "CambiarPagina")
+            {
+                CurrentPage = int.Parse(e.CommandArgument.ToString());
+                CargarProductos();
+            }
         }
 
         protected void btnAceptar_Click(object sender, EventArgs e)
@@ -289,18 +356,11 @@ namespace ELRINCON
                         ProductoNegocio prodNegocio = new ProductoNegocio();
                         Producto prod = prodNegocio.listar(idProducto)[0];
 
-                        // Asignamos el precio simulado por categoría
-                        decimal precioSimulado = 1500;
-                        if (prod.Categoria.Id == 1) precioSimulado = 1200; // Librería
-                        else if (prod.Categoria.Id == 2) precioSimulado = 25000; // Computación
-                        else if (prod.Categoria.Id == 3) precioSimulado = 18000; // Gaming
-                        else if (prod.Categoria.Id == 4) precioSimulado = 6500; // Juegos de mesa
-
                         ItemCarrito nuevoItem = new ItemCarrito
                         {
                             Producto = prod,
                             Cantidad = 1,
-                            PrecioUnitario = precioSimulado
+                            PrecioUnitario = prod.Precio
                         };
 
                         carrito.Add(nuevoItem);

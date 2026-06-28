@@ -36,7 +36,10 @@
                             <!-- Detalles del Producto -->
                             <div class="card-body d-flex flex-column p-3">
                                 <span class="text-uppercase text-muted fw-bold small mb-1 d-block"><%# ((Dominio.Producto)Container.DataItem).Marca.Nombre %></span>
-                                <h5 class="card-title text-dark fw-bold mb-2 text-truncate" title='<%# Eval("Nombre") %>'><%# Eval("Nombre") %></h5>
+                                <h5 class="card-title text-dark fw-bold mb-1 text-truncate" title='<%# Eval("Nombre") %>'><%# Eval("Nombre") %></h5>
+                                <div class="mb-2">
+                                    <span class="fs-5 fw-bold text-success">$<%# string.Format("{0:N2}", Eval("Precio")) %></span>
+                                </div>
                                 
                                 <div class="mt-auto pt-3 border-top">
                                     <div class="d-flex justify-content-between align-items-center mb-2">

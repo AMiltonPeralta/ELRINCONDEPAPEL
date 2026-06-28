@@ -67,18 +67,11 @@ namespace ELRINCON
                         ProductoNegocio prodNegocio = new ProductoNegocio();
                         Producto prod = prodNegocio.listar(idProducto)[0];
 
-                        // Asignamos el precio simulado por categoría (igual que en Productos.aspx.cs)
-                        decimal precioSimulado = 1500;
-                        if (prod.Categoria.Id == 1) precioSimulado = 1200; // Librería
-                        else if (prod.Categoria.Id == 2) precioSimulado = 25000; // Computación
-                        else if (prod.Categoria.Id == 3) precioSimulado = 18000; // Gaming
-                        else if (prod.Categoria.Id == 4) precioSimulado = 6500; // Juegos de mesa
-
                         ItemCarrito nuevoItem = new ItemCarrito
                         {
                             Producto = prod,
                             Cantidad = 1,
-                            PrecioUnitario = precioSimulado
+                            PrecioUnitario = prod.Precio
                         };
 
                         carrito.Add(nuevoItem);

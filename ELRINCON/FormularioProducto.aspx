@@ -36,6 +36,11 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="txtPrecio" class="form-label fw-semibold text-secondary">Precio</label>
+                    <asp:TextBox ID="txtPrecio" runat="server" CssClass="form-control" placeholder="0.00" Required="true" />
+                </div>
+
+                <div class="mb-3">
                     <label for="txtImagenUrl" class="form-label fw-semibold text-secondary">URL de la Imagen</label>
                     <asp:TextBox ID="txtImagenUrl" runat="server" CssClass="form-control" placeholder="https://ejemplo.com/imagen.jpg" AutoPostBack="true" OnTextChanged="txtImagenUrl_TextChanged" />
                 </div>
