@@ -9,6 +9,8 @@ namespace Dominio
         public string Direccion { get; set; } = "";
         public string Localidad { get; set; } = "";
         public string CodigoPostal { get; set; } = "";
+        public string Telefono { get; set; } = "";
+        public string Dni { get; set; } = "";
         public string NumeroSeguimiento { get; set; } = "";
         public string Estado { get; set; } = "Pendiente"; // "Pendiente", "Despachado", "Entregado"
 
