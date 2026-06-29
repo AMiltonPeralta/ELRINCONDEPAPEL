@@ -19,7 +19,9 @@
                 <!-- PANEL 1: INGRESO TRADICIONAL -->
                 <asp:Panel ID="pnlLogin" runat="server">
                     <div class="card shadow-sm border border-light-subtle rounded-3 p-4 bg-white">
-                        <h4 class="text-dark fw-bold mb-3 border-bottom pb-2">Ingresar a tu Cuenta</h4>
+                        <h4 class="text-dark fw-bold mb-3 border-bottom pb-2">
+                            <asp:Label ID="lblTituloLogin" runat="server" Text="Ingresar a tu Cuenta" />
+                        </h4>
                         <p class="text-muted small mb-4">Si ya tienes una cuenta registrada, escribe tu usuario (email) y contraseña.</p>
 
                         <div class="mb-3">

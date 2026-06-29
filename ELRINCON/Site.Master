@@ -128,6 +128,7 @@
                         <div class="d-flex align-items-center gap-2 ms-2">
                             <% if (!Negocio.Seguridad.sesionActiva(Session["usuario"])) { %>
                                 <a href="<%= ResolveUrl("~/Login.aspx") %>" class="btn btn-outline-primary text-white border-primary-subtle" style="font-size: 0.85rem; height: 38px; display: flex; align-items: center; justify-content: center; font-weight: 600;">Ingresar</a>
+                                <a href="<%= ResolveUrl("~/Login.aspx?admin=true") %>" class="btn btn-outline-danger text-white border-danger-subtle" style="font-size: 0.85rem; height: 38px; display: flex; align-items: center; justify-content: center; font-weight: 600;">Ingresar como Administrador</a>
                             <% } else { %>
                                 <span class="text-white small text-nowrap d-none d-md-inline ms-2">
                                     Hola, <strong class="text-info"><%= ((Dominio.Usuario)Session["usuario"]).Nombre %></strong> (<%= ((Dominio.Usuario)Session["usuario"]).Rol %>)

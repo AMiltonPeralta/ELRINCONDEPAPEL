@@ -19,6 +19,11 @@ namespace ELRINCON
                 {
                     RedireccionarLogueado();
                 }
+
+                if (Request.QueryString["admin"] != null && Request.QueryString["admin"].ToString() == "true")
+                {
+                    lblTituloLogin.Text = "Ingresar como Administrador";
+                }
             }
         }
 
@@ -73,12 +78,18 @@ namespace ELRINCON
                     return;
                 }
 
+                string rol = "Cliente";
+                if (Request.QueryString["admin"] != null && Request.QueryString["admin"].ToString() == "true")
+                {
+                    rol = "Administrador";
+                }
+
                 Usuario nuevo = new Usuario
                 {
                     Nombre = nombre,
                     Email = email,
                     Clave = clave,
-                    Rol = "Cliente",
+                    Rol = rol,
                     Activo = true
                 };
 
@@ -144,7 +155,14 @@ namespace ELRINCON
             }
             else
             {
-                Response.Redirect("Default.aspx", false);
+                if ((Request.QueryString["admin"] != null && Request.QueryString["admin"].ToString() == "true") || Seguridad.esAdmin(Session["usuario"]))
+                {
+                    Response.Redirect("Productos.aspx", false);
+                }
+                else
+                {
+                    Response.Redirect("Default.aspx", false);
+                }
             }
             Context.ApplicationInstance.CompleteRequest();
         }

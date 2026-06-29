@@ -33,6 +33,8 @@ namespace ELRINCON
                 if (!IsPostBack)
                 {
                     CargarMetodosPago();
+                    repDetallePedido.DataSource = carrito;
+                    repDetallePedido.DataBind();
                 }
             }
             catch (Exception ex)
@@ -71,10 +73,12 @@ namespace ELRINCON
             {
                 // 1. Validación Personalizada en C# usando la clase Validacion de la capa de Negocio
                 if (Validacion.validaTextoVacio(txtDireccion) || 
+                    Validacion.validaTextoVacio(txtDni) || 
+                    Validacion.validaTextoVacio(txtTelefono) || 
                     Validacion.validaTextoVacio(txtLocalidad) || 
                     Validacion.validaTextoVacio(txtCodigoPostal))
                 {
-                    Session.Add("error", "Debes completar todos los campos del formulario de envío para poder continuar.");
+                    Session.Add("error", "Debes completar todos los campos del formulario de envío (incluyendo DNI y Teléfono) para poder continuar.");
                     Response.Redirect("Error.aspx", false);
                     Context.ApplicationInstance.CompleteRequest();
                     return;
@@ -108,6 +112,8 @@ namespace ELRINCON
                 nuevoEnvio.Direccion = txtDireccion.Text.Trim();
                 nuevoEnvio.Localidad = txtLocalidad.Text.Trim();
                 nuevoEnvio.CodigoPostal = txtCodigoPostal.Text.Trim();
+                nuevoEnvio.Telefono = txtTelefono.Text.Trim();
+                nuevoEnvio.Dni = txtDni.Text.Trim();
                 nuevoEnvio.NumeroSeguimiento = "ENV-" + new Random().Next(100000, 999999).ToString();
                 nuevoEnvio.Estado = "Pendiente";
                 

@@ -17,6 +17,17 @@
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
+                            <label for="txtDni" class="form-label fw-semibold text-muted small text-uppercase">DNI / Documento</label>
+                            <asp:TextBox ID="txtDni" runat="server" CssClass="form-control" placeholder="Ej: 38123456" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="txtTelefono" class="form-label fw-semibold text-muted small text-uppercase">Teléfono de Contacto</label>
+                            <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" placeholder="Ej: 1123456789" />
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                             <label for="txtLocalidad" class="form-label fw-semibold text-muted small text-uppercase">Localidad</label>
                             <asp:TextBox ID="txtLocalidad" runat="server" CssClass="form-control" placeholder="Ej: Ramos Mejía" />
                         </div>
@@ -42,6 +53,24 @@
             <div class="col-lg-4">
                 <div class="card shadow-sm border border-light-subtle rounded-3 p-4 bg-white">
                     <h5 class="fw-bold text-dark mb-4">Resumen del Pedido</h5>
+                    
+                    <div class="mb-4">
+                        <asp:Repeater ID="repDetallePedido" runat="server">
+                            <ItemTemplate>
+                                <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-light-subtle" style="font-size: 0.9rem;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <img src='<%# string.IsNullOrEmpty(Eval("Producto.ImagenUrl") as string) ? "https://images.unsplash.com/photo-1595231712426-63d27862de67?w=100&q=80" : Eval("Producto.ImagenUrl") %>' 
+                                             class="rounded bg-light border p-1" style="width: 36px; height: 36px; object-fit: contain;" />
+                                        <div>
+                                            <span class="d-block fw-bold text-dark text-truncate" style="max-width: 140px;" title='<%# Eval("Producto.Nombre") %>'><%# Eval("Producto.Nombre") %></span>
+                                            <span class="text-muted small" style="font-size: 0.75rem;">Cant: <%# Eval("Cantidad") %></span>
+                                        </div>
+                                    </div>
+                                    <span class="fw-bold text-dark">$<%# string.Format("{0:N2}", Eval("Subtotal")) %></span>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </div>
                     
                     <div class="d-flex justify-content-between mb-3">
                         <span class="text-muted">Total de Artículos</span>
