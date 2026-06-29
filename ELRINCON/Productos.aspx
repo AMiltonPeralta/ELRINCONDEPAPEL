@@ -76,10 +76,10 @@
                             <div class="col">
                                 <div class="card h-100 border rounded shadow-sm hover-card transition-all" style="background: #ffffff;">
                                     <!-- Contenedor de la Imagen del Producto -->
-                                    <div class="position-relative overflow-hidden bg-light border-bottom rounded-top" style="height: 180px;">
+                                    <div class="position-relative overflow-hidden bg-light border-bottom rounded-top p-3 d-flex align-items-center justify-content-center" style="height: 180px;">
                                         <img src='<%# string.IsNullOrEmpty(Eval("ImagenUrl") as string) ? "https://images.unsplash.com/photo-1595231712426-63d27862de67?w=300&q=80" : Eval("ImagenUrl") %>' 
                                              alt='<%# Eval("Nombre") %>' 
-                                             class="w-100 h-100 object-fit-cover transition-transform hover-zoom"
+                                             class="mw-100 mh-100 object-fit-contain transition-transform hover-zoom"
                                              onerror="this.src='https://images.unsplash.com/photo-1595231712426-63d27862de67?w=300&q=80';" />
                                         <span class="position-absolute top-2 end-2 badge bg-dark opacity-75">
                                             Stock: <%# Eval("StockActual") %>
@@ -99,7 +99,10 @@
                                                 <span class="badge bg-secondary opacity-75"><%# ((Dominio.Producto)Container.DataItem).Categoria.Nombre %></span>
                                                 <asp:HyperLink ID="lnkEditar" runat="server" NavigateUrl='<%# "FormularioProducto.aspx?id=" + Eval("Id") + "&cat=" + Eval("Categoria.Id") %>' CssClass="btn btn-sm btn-outline-warning fw-bold px-2 py-0" style="font-size: 0.75rem;" Visible='<%# Negocio.Seguridad.esAdmin(Session["usuario"]) %>'>Editar</asp:HyperLink>
                                             </div>
-                                            <asp:LinkButton ID="btnAgregarCarrito" runat="server" CssClass="btn btn-sm btn-primary w-100 fw-bold d-flex align-items-center justify-content-center gap-1" CommandName="AgregarCarrito" CommandArgument='<%# Eval("Id") %>'>
+                                            <asp:LinkButton ID="btnComprar" runat="server" CssClass="btn btn-sm btn-success w-100 fw-bold mb-2 d-flex align-items-center justify-content-center gap-1" CommandName="Comprar" CommandArgument='<%# Eval("Id") %>'>
+                                                Comprar
+                                            </asp:LinkButton>
+                                            <asp:LinkButton ID="btnAgregarCarrito" runat="server" CssClass="btn btn-sm btn-outline-primary w-100 fw-bold d-flex align-items-center justify-content-center gap-1" CommandName="AgregarCarrito" CommandArgument='<%# Eval("Id") %>'>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
                                                   <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z"/>
                                                   <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>

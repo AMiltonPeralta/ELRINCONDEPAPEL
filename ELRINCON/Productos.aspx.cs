@@ -325,7 +325,7 @@ namespace ELRINCON
 
         protected void repProductos_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            if (e.CommandName == "AgregarCarrito")
+            if (e.CommandName == "AgregarCarrito" || e.CommandName == "Comprar")
             {
                 try
                 {
@@ -369,20 +369,27 @@ namespace ELRINCON
                     // 3. Guardar el carrito en la sesión
                     Session["Carrito"] = carrito;
 
-                    // 4. Redirigir para refrescar la pantalla y el badge del navbar
-                    string busqueda = Request.QueryString["busqueda"];
-                    string catId = Request.QueryString["cat"];
-                    if (!string.IsNullOrEmpty(busqueda))
+                    // 4. Redirigir según el comando ejecutado
+                    if (e.CommandName == "Comprar")
                     {
-                        Response.Redirect("Productos.aspx?busqueda=" + HttpUtility.UrlEncode(busqueda), false);
-                    }
-                    else if (!string.IsNullOrEmpty(catId))
-                    {
-                        Response.Redirect("Productos.aspx?cat=" + catId, false);
+                        Response.Redirect("Carrito.aspx", false);
                     }
                     else
                     {
-                        Response.Redirect("Productos.aspx", false);
+                        string busqueda = Request.QueryString["busqueda"];
+                        string catId = Request.QueryString["cat"];
+                        if (!string.IsNullOrEmpty(busqueda))
+                        {
+                            Response.Redirect("Productos.aspx?busqueda=" + HttpUtility.UrlEncode(busqueda), false);
+                        }
+                        else if (!string.IsNullOrEmpty(catId))
+                        {
+                            Response.Redirect("Productos.aspx?cat=" + catId, false);
+                        }
+                        else
+                        {
+                            Response.Redirect("Productos.aspx", false);
+                        }
                     }
                 }
                 catch (Exception ex)

@@ -36,7 +36,7 @@ namespace ELRINCON
 
         protected void repProductos_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            if (e.CommandName == "AgregarCarrito")
+            if (e.CommandName == "AgregarCarrito" || e.CommandName == "Comprar")
             {
                 try
                 {
@@ -80,8 +80,15 @@ namespace ELRINCON
                     // 3. Guardar el carrito en la sesión
                     Session["Carrito"] = carrito;
 
-                    // 4. Redirigir para refrescar la pantalla y el badge del navbar
-                    Response.Redirect("Default.aspx", false);
+                    // 4. Redirigir según el comando ejecutado
+                    if (e.CommandName == "Comprar")
+                    {
+                        Response.Redirect("Carrito.aspx", false);
+                    }
+                    else
+                    {
+                        Response.Redirect("Default.aspx", false);
+                    }
                     Context.ApplicationInstance.CompleteRequest();
                 }
                 catch (Exception ex)
