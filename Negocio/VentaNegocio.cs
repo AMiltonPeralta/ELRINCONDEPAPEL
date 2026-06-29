@@ -59,8 +59,8 @@ namespace Negocio
 
                         // 3. Insertar Envío
                         string queryEnvio = @"
-                            INSERT INTO Envios (IdVenta, Direccion, Localidad, CodigoPostal, NumeroSeguimiento, Estado) 
-                            VALUES (@IdVenta, @Direccion, @Localidad, @CodigoPostal, @NumeroSeguimiento, @Estado);";
+                            INSERT INTO Envios (IdVenta, Direccion, Localidad, CodigoPostal, NumeroSeguimiento, Estado, Telefono, Dni) 
+                            VALUES (@IdVenta, @Direccion, @Localidad, @CodigoPostal, @NumeroSeguimiento, @Estado, @Telefono, @Dni);";
 
                         using (SqlCommand cmdEnvio = new SqlCommand(queryEnvio, conexion, transaccion))
                         {
@@ -70,6 +70,8 @@ namespace Negocio
                             cmdEnvio.Parameters.AddWithValue("@CodigoPostal", nueva.DatosEnvio.CodigoPostal);
                             cmdEnvio.Parameters.AddWithValue("@NumeroSeguimiento", nueva.DatosEnvio.NumeroSeguimiento);
                             cmdEnvio.Parameters.AddWithValue("@Estado", nueva.DatosEnvio.Estado);
+                            cmdEnvio.Parameters.AddWithValue("@Telefono", nueva.DatosEnvio.Telefono ?? (object)DBNull.Value);
+                            cmdEnvio.Parameters.AddWithValue("@Dni", nueva.DatosEnvio.Dni ?? (object)DBNull.Value);
 
                             cmdEnvio.ExecuteNonQuery();
                         }

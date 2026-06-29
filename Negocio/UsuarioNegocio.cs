@@ -42,11 +42,12 @@ namespace Negocio
             {
                 datos.setearConsulta(@"
                     INSERT INTO Usuarios (Nombre, Email, Clave, Rol, Activo) 
-                    VALUES (@nombre, @email, @clave, 'Cliente', 1);
+                    VALUES (@nombre, @email, @clave, @rol, 1);
                     SELECT CAST(scope_identity() AS int);");
                 datos.setearParametro("@nombre", nuevo.Nombre);
                 datos.setearParametro("@email", nuevo.Email);
                 datos.setearParametro("@clave", nuevo.Clave);
+                datos.setearParametro("@rol", nuevo.Rol);
 
                 return datos.ejecutarAccionScalar();
             }
