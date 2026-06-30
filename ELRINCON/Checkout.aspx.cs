@@ -35,6 +35,7 @@ namespace ELRINCON
                     CargarMetodosPago();
                     repDetallePedido.DataSource = carrito;
                     repDetallePedido.DataBind();
+                    ActualizarPanelPago();
                 }
             }
             catch (Exception ex)
@@ -82,6 +83,73 @@ namespace ELRINCON
                     Response.Redirect("Error.aspx", false);
                     Context.ApplicationInstance.CompleteRequest();
                     return;
+                }
+
+                // 2. Si eligió tarjeta, validar campos de la tarjeta
+                if (pnlTarjeta.Visible)
+                {
+                    if (Validacion.validaTextoVacio(txtTarjetaNumero) || 
+                        Validacion.validaTextoVacio(txtTarjetaVence) || 
+                        Validacion.validaTextoVacio(txtTarjetaCVV))
+                    {
+                        Session.Add("error", "Debes completar todos los datos de la tarjeta de crédito/débito.");
+                        Response.Redirect("Error.aspx", false);
+                        Context.ApplicationInstance.CompleteRequest();
+                        return;
+                    }
+                    
+                    if (txtTarjetaNumero.Text.Length < 19 || txtTarjetaCVV.Text.Length < 3)
+                    {
+                        Session.Add("error", "El número de tarjeta o el código de seguridad (CVV) no tienen un formato válido.");
+                        Response.Redirect("Error.aspx", false);
+                        Context.ApplicationInstance.CompleteRequest();
+                        return;
+                    }
+
+                    // Validar vencimiento (MM/AA)
+                    string vencimiento = txtTarjetaVence.Text;
+                    if (string.IsNullOrEmpty(vencimiento) || !vencimiento.Contains("/"))
+                    {
+                        Session.Add("error", "El formato de la fecha de vencimiento debe ser MM/AA.");
+                        Response.Redirect("Error.aspx", false);
+                        Context.ApplicationInstance.CompleteRequest();
+                        return;
+                    }
+
+                    string[] partes = vencimiento.Split('/');
+                    if (partes.Length == 2 && int.TryParse(partes[0], out int mes) && int.TryParse(partes[1], out int anio))
+                    {
+                        if (mes < 1 || mes > 12)
+                        {
+                            Session.Add("error", "El mes de vencimiento no es válido.");
+                            Response.Redirect("Error.aspx", false);
+                            Context.ApplicationInstance.CompleteRequest();
+                            return;
+                        }
+
+                        // Asumir que "AA" es el año de este siglo (ej. 26 -> 2026)
+                        int anioCompleto = 2000 + anio;
+                        
+                        DateTime fechaActual = DateTime.Now;
+                        int mesActual = fechaActual.Month;
+                        int anioActual = fechaActual.Year;
+
+                        // Si el año es menor que el año actual, o es el mismo año pero el mes es menor
+                        if (anioCompleto < anioActual || (anioCompleto == anioActual && mes < mesActual))
+                        {
+                            Session.Add("error", "La tarjeta ingresada está vencida. Por favor, utiliza otra tarjeta.");
+                            Response.Redirect("Error.aspx", false);
+                            Context.ApplicationInstance.CompleteRequest();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        Session.Add("error", "La fecha de vencimiento no tiene un formato válido (MM/AA).");
+                        Response.Redirect("Error.aspx", false);
+                        Context.ApplicationInstance.CompleteRequest();
+                        return;
+                    }
                 }
 
                 // Obtener datos del carrito de la sesión
@@ -182,7 +250,7 @@ namespace ELRINCON
                 Session["Carrito"] = null;
 
                 // Redirigir a Confirmacion
-                Response.Redirect("Confirmacion.aspx?seguimiento=" + nuevoEnvio.NumeroSeguimiento, false);
+                Response.Redirect("Confirmacion.aspx?seguimiento=" + nuevoEnvio.NumeroSeguimiento + "&metodo=" + nuevaVenta.Pago.Id + "&factura=" + nuevaVenta.NumeroFactura, false);
                 Context.ApplicationInstance.CompleteRequest();
             }
             catch (System.Threading.ThreadAbortException)
@@ -193,6 +261,31 @@ namespace ELRINCON
             {
                 Session.Add("error", ex.ToString());
                 Response.Redirect("Error.aspx");
+            }
+        }
+
+        protected void ddlMetodoPago_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ActualizarPanelPago();
+        }
+
+        private void ActualizarPanelPago()
+        {
+            string metodo = ddlMetodoPago.SelectedValue;
+            if (metodo == "1" || metodo == "2") // Tarjeta de Crédito / Débito
+            {
+                pnlTarjeta.Visible = true;
+                pnlPagoFacil.Visible = false;
+            }
+            else if (metodo == "4") // Efectivo / Pago Fácil
+            {
+                pnlTarjeta.Visible = false;
+                pnlPagoFacil.Visible = true;
+            }
+            else // Transferencia Bancaria
+            {
+                pnlTarjeta.Visible = false;
+                pnlPagoFacil.Visible = false;
             }
         }
     }

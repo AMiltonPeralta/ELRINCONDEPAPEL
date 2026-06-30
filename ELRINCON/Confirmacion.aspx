@@ -33,6 +33,18 @@
                 </div>
             </div>
             
+            <!-- Mensaje Pago Fácil -->
+            <asp:Panel ID="pnlConfirmacionPagoFacil" runat="server" Visible="false" CssClass="alert alert-info border-info-subtle mb-4 text-start shadow-sm">
+                <div class="d-flex gap-2 align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-wallet2 text-info flex-shrink-0" viewBox="0 0 16 16">
+                        <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9A1.5 1.5 0 0 1 1.5 3H2V1.78a1.5 1.5 0 0 1 1.864-1.454zM3 3h9v-.22a.5.5 0 0 0-.118-.323L11.5 2H4.5L4.118 2.457A.5.5 0 0 0 4 2.78zM1.5 4A.5.5 0 0 0 1 4.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
+                    </svg>
+                    <div>
+                        <strong>Instrucciones de Pago (Pago Fácil):</strong> Dirígete a cualquier sucursal física de Pago Fácil con tu número de factura <strong><asp:Label ID="lblFactura" runat="server" /></strong> para abonar el total correspondiente.
+                    </div>
+                </div>
+            </asp:Panel>
+            
             <div class="d-flex justify-content-center gap-3">
                 <a href="Productos.aspx" class="btn btn-primary px-4 py-2 fw-semibold">Seguir Comprando</a>
             </div>

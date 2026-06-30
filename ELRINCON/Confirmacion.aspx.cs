@@ -16,6 +16,24 @@ namespace ELRINCON
             {
                 lblSeguimiento.Text = "No disponible";
             }
+
+            // Si es pago fácil (metodo == 4)
+            if (Request.QueryString["metodo"] != null && Request.QueryString["metodo"].ToString() == "4")
+            {
+                pnlConfirmacionPagoFacil.Visible = true;
+                if (Request.QueryString["factura"] != null)
+                {
+                    lblFactura.Text = Request.QueryString["factura"].ToString();
+                }
+                else
+                {
+                    lblFactura.Text = "No disponible";
+                }
+            }
+            else
+            {
+                pnlConfirmacionPagoFacil.Visible = false;
+            }
         }
     }
 }
