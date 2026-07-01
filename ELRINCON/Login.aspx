@@ -81,18 +81,5 @@
 
             </div>
         </div>
-
-        <!-- Accesos Rápidos de Desarrollo (Centrado) -->
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6 col-lg-5">
-                <div class="card shadow-sm border border-light-subtle rounded-3 p-4 bg-light text-center">
-                    <h6 class="fw-bold text-secondary text-uppercase small mb-3">Accesos rápidos para pruebas (Desarrollo)</h6>
-                    <div class="d-flex justify-content-center gap-3 flex-wrap">
-                        <asp:Button ID="btnIngresarUsuario" runat="server" Text="Entrar como Milton Cliente" CssClass="btn btn-outline-primary btn-sm fw-semibold" OnClick="btnIngresarUsuario_Click" UseSubmitBehavior="false" />
-                        <asp:Button ID="btnIngresarAdmin" runat="server" Text="Entrar como Administrador" CssClass="btn btn-outline-danger btn-sm fw-semibold" OnClick="btnIngresarAdmin_Click" UseSubmitBehavior="false" />
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </asp:Content>

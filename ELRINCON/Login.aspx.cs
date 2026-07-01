@@ -109,16 +109,6 @@ namespace ELRINCON
             }
         }
 
-        protected void btnIngresarUsuario_Click(object sender, EventArgs e)
-        {
-            RealizarLogin("cliente@elrincon.com", "cliente123");
-        }
-
-        protected void btnIngresarAdmin_Click(object sender, EventArgs e)
-        {
-            RealizarLogin("admin@elrincon.com", "admin123");
-        }
-
         private void RealizarLogin(string email, string clave)
         {
             try
